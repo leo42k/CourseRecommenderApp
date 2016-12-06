@@ -1,5 +1,5 @@
 info <- read.csv(file.path("info.csv"), stringsAsFactors = FALSE)
-info[,3] == 
+info[,3]
 
 library(shiny)
 library(DT)
@@ -16,7 +16,7 @@ shinyServer(function(input, output, session) {
                "4" = "4th",
                "S" = "Summer",
                "S1" = "Summer Inst.",
-               "Int" = "Winter Inst.")
+               "INT" = "Winter Inst.")
     })
     
     output$x13 <- DT::renderDataTable({
