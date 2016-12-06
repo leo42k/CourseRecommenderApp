@@ -11,20 +11,19 @@ shinyServer(function(input, output, session) {
     datasetInput <- reactive({
         switch(input$term,
                "1" = "1st",
-               "2" = "2st",
-               "3" = "3st",
-               "4" = "4st",
+               "2" = "2nd",
+               "3" = "3rd",
+               "4" = "4th",
                "S" = "Summer",
                "S1" = "Summer Inst.",
-               "Int" = "Winter Inst")
+               "Int" = "Winter Inst.")
     })
     
-    term = datasetInput()
-    
-    # row selection
-
-    df_use <- df[df[,3] == term,]
-    output$x13 = DT::renderDataTable(df_use)
+    output$x13 <- DT::renderDataTable({
+        term <- datasetInput()
+        df_use <- df[df[,3] == term,]
+        df_use
+    })
     output$y13 = renderPrint(input$x13_rows_selected)
     
     output$x14 = DT::renderDataTable(df, selection = "none")
