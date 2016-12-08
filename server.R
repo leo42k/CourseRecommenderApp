@@ -1,5 +1,5 @@
 info <- read.csv(file.path("info.csv"), stringsAsFactors = FALSE)
-info[,3]
+source(file.path("Yang", "code.sent.R"))
 
 library(shiny)
 library(DT)
