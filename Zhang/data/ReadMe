@@ -1,0 +1,3 @@
+1. info.csv contains basic information for courses scrapping from the websites (link,course id, course name, term, time1, time2)
+2. info_duplicate.csv is similar to info.csv. The only difference is that I extract courses (different schedule for different days) and list them in the last three rows. For the last three courses, if you search course id, it will return two row id.
+3. comb_time.rds is ultimate processed data that lists basic information for each course and its time schedule (psuedo time for day). It will be used in deciding whether there's a time conflict.
