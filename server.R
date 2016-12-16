@@ -20,6 +20,8 @@ shinyServer(function(input, output, session) {
                "INT" = "Winter Inst.")
     })
     
+    
+    
     datasetInput_term <- reactive({
         input$term
     })
@@ -33,7 +35,12 @@ shinyServer(function(input, output, session) {
         df_use <- df[df[,3] == term,]
         df_use
     })
-    output$y13 = renderPrint(input$x13_rows_selected)
+#    output$y13 = renderPrint(input$x13_rows_selected)
+    output$y13 = DT::renderDataTable({
+        term <- datasetInput()
+        df_use <- df[df[,3] == term,]
+        df_use[input$x13_rows_selected,]
+    }, selection = "none")
     
     output$x14 = DT::renderDataTable({
         # df

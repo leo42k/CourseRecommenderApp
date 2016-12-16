@@ -34,19 +34,20 @@ navbarPage(
     ),
     
     tabPanel(
-        'Enrollment History'
+        'All Selected Courses',
+        DT::dataTableOutput('y13')
     ),
     
     fluidRow(
         column(
             6, h1('Planned Courses'), hr(),
-            DT::dataTableOutput('x13'),
-            verbatimTextOutput('y13')
+            DT::dataTableOutput('x13')
+#            verbatimTextOutput('y13')
         ),
         column(
             6, h1('Recommended Courses'), hr(),
-            DT::dataTableOutput('x14'),
-            verbatimTextOutput('y14')
+            DT::dataTableOutput('x14')
+#            verbatimTextOutput('y14')
         )
     )
 )
