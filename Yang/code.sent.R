@@ -4,18 +4,23 @@ library(readxl)
 library(dplyr)
 library(stringr)
 #########read in data
-dat <- read_excel("CommonCourseApp.xlsx")
+# dat <- read_excel("CommonCourseApp.xlsx")
 #remove NA
-dat <- dat[complete.cases(dat),] 
+# dat <- dat[complete.cases(dat),] 
 #rename course
-course.name <- paste(dat$`Course Name`,".",dat$`Section Name`,sep='')
-course.name <- gsub("PH.","",course.name) 
+# course.name <- paste(dat$`Course Name`,".",dat$`Section Name`,sep='')
+# course.name <- gsub("PH.","",course.name) 
+# saveRDS(course.name, file.path("Yang", "course.name.rds"))
+course.name <- readRDS(file.path("Yang", "course.name.rds"))
 #rename term
-course.term <- dat$AcadPeriodSctn
-course.term <- gsub("PH 2015-16 ","", course.term)
-#final data
-mydat <- data.frame(id = dat$RandomID, program = dat$AcademicProgramName,term = course.term,course = course.name)
-
+# course.term <- dat$AcadPeriodSctn
+# course.term <- gsub("PH 2015-16 ","", course.term)
+# saveRDS(course.term, file.path("Yang", "course.term.rds"))
+course.term <- readRDS(file.path("Yang", "course.term.rds"))
+# final data
+# mydat <- data.frame(id = dat$RandomID, program = dat$AcademicProgramName,term = course.term,course = course.name)
+# saveRDS(mydat, file.path("Yang", "mydat.rds"))
+mydat <- readRDS(file.path("Yang", "mydat.rds"))
 ########naive recommander
 CourseRank <- function(user.program,user.term){
     mydat.summary <- mydat %>%  group_by(program,term,course) %>% summarise(count=n()) %>% arrange(desc(count))
@@ -23,9 +28,9 @@ CourseRank <- function(user.program,user.term){
     return(list(term = user.term,recommand.courses = course.all$course))
 }
 #example of CourseRank
-user.program <- "PHD: Biostatistics"
-user.term <- "1"
-CourseRank(user.program,user.term)
+# user.program <- "PHD: Biostatistics"
+# user.term <- "1"
+# CourseRank(user.program,user.term)
 
 
 #######rule mining
@@ -83,5 +88,6 @@ Recommander <- function(input.courses){
 
 #example of Recommander
 #input method, output probability
-input.courses <- "140.751.01"
-Recommander(input.courses)
+# input.courses <- c("140.751.01", "140.651.01")
+# Recommander(input.courses)
+
