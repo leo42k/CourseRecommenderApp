@@ -37,12 +37,13 @@ shinyServer(function(input, output, session) {
     
     output$x14 = DT::renderDataTable({
         # df
+        term_df <- datasetInput()
         term <- datasetInput_term()
         program <- datasetInput_program()
         temp <- CourseRank(program, term)
         temp_1 <- as.matrix(temp$recommand.courses)
-        temp_2 <- data.frame(course_id = temp_1)
-        inner_join(temp_2, df)
+        temp_2 <- data.frame(course_id = temp_1, term = rep(term_df, length(temp_1)))
+        inner_join(temp_2, df)[,c(1,3,2)]
     }, selection = "none")
     output$y14 = renderPrint(input$x14_rows_selected)
     

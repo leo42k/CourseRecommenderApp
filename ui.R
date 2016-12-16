@@ -39,7 +39,7 @@ navbarPage(
     
     fluidRow(
         column(
-            6, h1('Current Courses'), hr(),
+            6, h1('Planned Courses'), hr(),
             DT::dataTableOutput('x13'),
             verbatimTextOutput('y13')
         ),
