@@ -26,10 +26,10 @@ navbarPage(
                         choices = programs),
             
             selectInput("term", "Choose a term:", 
-                        choices = terms),
+                        choices = terms)
             
             
-            numericInput("obs", "Number of course recommendations:", 5)
+#            ,numericInput("obs", "Number of course recommendations:", 5)
         )
     ),
     

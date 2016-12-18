@@ -35,39 +35,44 @@ CourseRank <- function(user.program,user.term){
 
 #######rule mining
 ###covert to binary matrix
-CovertBinary <- function(items,purchase){
-    id <- unique(purchase$id)
-    binary.matrix <- matrix(0,nrow = length(id),ncol = length(items))
-    rownames(binary.matrix) <- id
-    colnames(binary.matrix) <- items
-    for(i in 1:length(id)){
-        current.purchase <- purchase[which(purchase$id==id[i]),]$course
-        pois <- match(current.purchase,items)
-        binary.matrix[i,pois] <- 1
-    }
-    binary.matrix
-}
+#CovertBinary <- function(items,purchase){
+#    id <- unique(purchase$id)
+#    binary.matrix <- matrix(0,nrow = length(id),ncol = length(items))
+#    rownames(binary.matrix) <- id
+#    colnames(binary.matrix) <- items
+#    for(i in 1:length(id)){
+#        current.purchase <- purchase[which(purchase$id==id[i]),]$course
+#        pois <- match(current.purchase,items)
+#        binary.matrix[i,pois] <- 1
+#    }
+#    binary.matrix
+#}
 #example of CovertBinary
-purchase <- mydat %>% filter(program==user.program & term== user.term) 
-items <- CourseRank(user.program,user.term)$recommand.courses
-mybinary <- CovertBinary(items,purchase)
+# purchase <- mydat %>% filter(program==user.program & term== user.term) 
+# items <- CourseRank(user.program,user.term)$recommand.courses
+# mybinary <- CovertBinary(items,purchase)
 
+# purchase <- mydat
+# items <- mydat$course %>% unique
+# mybinary <- CovertBinary(items, purchase)
 
 ###create association rule
-AssociationRule <- function(mybinary){
-    rules <- apriori(mybinary, parameter=list(support=0.1, confidence=0.8)) #specified parameters
+ AssociationRule <- function(mybinary){
+    rules <- apriori(mybinary, parameter=list(support=0.03, confidence=0.5)) #specified parameters
     rules <- as(rules,"data.frame")
     rules
 }
 
 #example of AssociationRule
-mybinary <- CovertBinary(items,purchase)
-AssociationRule(mybinary)
+# mybinary <- CovertBinary(items,purchase)
+# AssociationRule(mybinary)
 
 ###prediction based on association rule
 #given the association rule
-rules <- AssociationRule(mybinary)
+# rules <- AssociationRule(mybinary)
+# saveRDS(rules, file.path("Yang", "rules.rds"))
 
+rules <- readRDS(file.path("Yang", "rules.rds"))
 #corrently find the first lhs that contains all the input.courses
 Recommander <- function(input.courses){
     recommand.courses <- NULL
@@ -88,6 +93,6 @@ Recommander <- function(input.courses){
 
 #example of Recommander
 #input method, output probability
-# input.courses <- c("140.751.01", "140.651.01")
+# input.courses <- "140.751.01"
 # Recommander(input.courses)
 
