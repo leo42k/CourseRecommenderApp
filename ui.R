@@ -25,7 +25,8 @@ navbarPage(
                         choices = programs),
             
             selectInput("term", "Choose a term:", 
-                        choices = terms)
+                        choices = terms), 
+            HTML("Please update your course plan on the Recommender Tab")
             
             
 #            ,numericInput("obs", "Number of course recommendations:", 5)
