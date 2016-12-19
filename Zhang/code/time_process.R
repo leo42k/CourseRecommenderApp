@@ -1,43 +1,10 @@
-### Processing time for conflict schedule
 library(readr)
 library(dplyr)
 library(tidyr)
 library(stringr)
 library(lubridate)
 
-# forget to process time2
-enroll=read_csv("./data/enrollment.csv")
-info=read_rds("./data/info_duplicate.rds")
-
-tmp_time=info[,5] %>% str_split(",") %>% lapply( `length<-`, 2)
-tmp_time=t(sapply(tmp_time,unlist))
-
-# change day of week into virtual date (Mon: 2016-01-01)
-day = tmp_time[,1] %>% str_replace_all("Monday","M") %>% str_replace_all("Tuesday","Tu") %>%
-    str_replace_all("Wednesday","W") %>% str_replace_all("Thursday","Th") %>% str_replace_all("Friday","F") %>% str_replace_all("Saturday","Sa") %>%
-    str_replace_all("M","2016-01-01,") %>% str_replace_all("Tu","2016-01-02,") %>%
-    str_replace_all("W","2016-01-03,") %>% str_replace_all("Th","2016-01-04,") %>% 
-    str_replace_all("F","2016-01-05,") %>% str_replace_all("Sa","2016-01-06,") %>% 
-    str_replace_all("Su","2016-01-07,") %>% str_replace_all(",*$","")
-
-# process time 
-time=tmp_time[,2] %>% str_replace_all(" ","") %>% str_split("-") %>% lapply( `length<-`, 2)
-time=t(sapply(time,unlist))
-# identical(which(is.na(time[,1])),which(is.na(time[,2])))
-
-time_idx=c(grep("am|pm",time[,1],ignore.case = T), which(is.na(time[,1])))  #start time has am/pm or it's NA
-tmp=str_sub(time[,2],-2,-1)
-time[-time_idx,1]=paste0(time[-time_idx,1],tmp[-time_idx])
-time=as.data.frame(time,stringsAsFactors = F)
-colnames(time)=c("start","end")
-
-# combine day of week and start/end time
-tmp_time=as.data.frame(cbind(info[,1:4],day,time),stringsAsFactors = F)
-colnames(tmp_time)=c("link","course_id","course_name","term","day","start","end")
-comb=tmp_time %>% separate(day,into=paste0(rep("day",7),1:7),sep=",") 
-# saveRDS(comb,"./data/comb_time.rds")
-
-# comb=readRDS("./Zhang/data/comb_time.rds")
+comb=readRDS("./Zhang/data/comb_time.rds")
 # Calculate time interval for specific day, start and end time
 
 time_interval <- function(day,start,end){
@@ -98,8 +65,8 @@ search_interval <- function(id,t){
     return(int_list)
 }
 
-int1=search_interval("410.610.01","3rd")
-int2=search_interval("120.600.01","1st")
+# int1=search_interval("410.610.01","3rd")
+# int2=search_interval("120.600.01","1st")
 
 # return a vector indicating whether a recommended course is conflict with the selected list or not
 
@@ -126,9 +93,5 @@ time_conflict <- function(recommend,recommend_term,course_list,course_list_term)
     return(conflict)
 }
 
-recommend="120.600.01"
-recommend_term="1st"
-course_list=comb$course_id[1:100]
-course_list_term=comb$term[1:100]
-time_conflict(recommend,recommend_term,course_list,course_list_term)
+time_conflict
 

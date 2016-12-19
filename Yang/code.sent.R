@@ -37,15 +37,17 @@ CourseRank <- function(user.program,user.term){
 ###covert to binary matrix
 #CovertBinary <- function(items,purchase){
 #    id <- unique(purchase$id)
-#    binary.matrix <- matrix(0,nrow = length(id),ncol = length(items))
-#    rownames(binary.matrix) <- id
-#    colnames(binary.matrix) <- items
-#    for(i in 1:length(id)){
-#        current.purchase <- purchase[which(purchase$id==id[i]),]$course
-#        pois <- match(current.purchase,items)
-#        binary.matrix[i,pois] <- 1
+#    if (length(id) == 0) return(NA) else {
+#        binary.matrix <- matrix(0,nrow = length(id),ncol = length(items))
+#        rownames(binary.matrix) <- id
+#        colnames(binary.matrix) <- items
+#        for(i in 1:length(id)){
+#            current.purchase <- purchase[which(purchase$id==id[i]),]$course
+#            pois <- match(current.purchase,items)
+#            binary.matrix[i,pois] <- 1
+#        }
+#        binary.matrix
 #    }
-#    binary.matrix
 #}
 #example of CovertBinary
 # purchase <- mydat %>% filter(program==user.program & term== user.term) 
@@ -57,11 +59,11 @@ CourseRank <- function(user.program,user.term){
 # mybinary <- CovertBinary(items, purchase)
 
 ###create association rule
- AssociationRule <- function(mybinary){
-    rules <- apriori(mybinary, parameter=list(support=0.03, confidence=0.5)) #specified parameters
-    rules <- as(rules,"data.frame")
-    rules
-}
+# AssociationRule <- function(mybinary){
+#    rules <- apriori(mybinary, parameter=list(support=0.1, confidence=0.7)) #specified parameters
+#    rules <- as(rules,"data.frame")
+#    rules
+#}
 
 #example of AssociationRule
 # mybinary <- CovertBinary(items,purchase)
@@ -72,24 +74,24 @@ CourseRank <- function(user.program,user.term){
 # rules <- AssociationRule(mybinary)
 # saveRDS(rules, file.path("Yang", "rules.rds"))
 
-rules <- readRDS(file.path("Yang", "rules.rds"))
+# rules <- readRDS(file.path("Yang", "rules.rds"))
 #corrently find the first lhs that contains all the input.courses
-Recommander <- function(input.courses){
-    recommand.courses <- NULL
-    rules <- (rules$rules %>% str_split(" => "))
-    lhs <- lapply(rules,function(x) x[1])
-    rhs <- lapply(rules,function(x) x[2])
-    #covert lhs to list of vectors
-    lhs <- gsub("\\{|\\}","",lhs) %>% str_split(",")
-    rhs <- gsub("\\{|\\}","",rhs) %>% str_split(",")
-    for (i in 1:length(lhs)){
-        if (input.courses %in% lhs[[i]]){
-            recommand.courses <- rhs[[i]]
-            break;
-        }
-    }
-    recommand.courses #if don't find rules, use CourseRank
-}
+#Recommander <- function(input.courses){
+#    recommand.courses <- NULL
+#    rules <- (rules$rules %>% str_split(" => "))
+#    lhs <- lapply(rules,function(x) x[1])
+#    rhs <- lapply(rules,function(x) x[2])
+#    #covert lhs to list of vectors
+#    lhs <- gsub("\\{|\\}","",lhs) %>% str_split(",")
+#    rhs <- gsub("\\{|\\}","",rhs) %>% str_split(",")
+#    for (i in 1:length(lhs)){
+#        if (input.courses %in% lhs[[i]]){
+#            recommand.courses <- rhs[[i]]
+#            break;
+#        }
+#    }
+#    recommand.courses #if don't find rules, use CourseRank
+#}
 
 #example of Recommander
 #input method, output probability
