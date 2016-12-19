@@ -94,6 +94,14 @@ shinyServer(function(input, output, session) {
         temp_3 <- inner_join(temp_2, df)[,c(1,3,2)]
         i <- which(program == list_program)
         j <- which(term == list_term)
+        add_link <- function(tempdf){
+            if (nrow(tempdf) >=1) {
+                for (i in 1:nrow(tempdf)){
+                    tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term_df)==1, 1],'>', tempdf[i,1], '</a>')
+                }
+            }
+            return(tempdf)
+        }
         if (file.exists(file.path("Yang", paste0(i, "_", j, ".rds")))) {
             rules <- readRDS(file.path("Yang", paste0(i, "_", j, ".rds")))
             Recommander <- function(input.courses){
@@ -118,10 +126,17 @@ shinyServer(function(input, output, session) {
                 temp_4 <- data.frame(course_id = list_recommendation, term = rep(term_df, length(list_recommendation)))
                 temp_5 <- inner_join(temp_4, df)[,c(1,3,2)]
                 temp_6 <- rbind(temp_3[(temp_3[,1] %in% temp_5[,1]),], temp_3[!(temp_3[,1] %in% temp_5[,1]),])
-                temp_6
-            } else temp_3
-        } else temp_3
-    }, selection = "none", rownames= FALSE)
+                temp_7 <- add_link(temp_6)
+                datatable(temp_7, escape = TRUE, rownames = FALSE)
+            } else {
+                temp_4 <- add_link(temp_3)
+                datatable(temp_4, escape = FALSE, rownames = FALSE)
+            }
+        } else {
+            temp_4 <- add_link(temp_3)
+            datatable(temp_4, escape = FALSE, rownames = FALSE)
+        }
+    }, selection = "none")
     output$y14 = renderPrint(input$x14_rows_selected)
     
 })
