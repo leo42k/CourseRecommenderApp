@@ -127,7 +127,7 @@ shinyServer(function(input, output, session) {
                 temp_5 <- inner_join(temp_4, df)[,c(1,3,2)]
                 temp_6 <- rbind(temp_3[(temp_3[,1] %in% temp_5[,1]),], temp_3[!(temp_3[,1] %in% temp_5[,1]),])
                 temp_7 <- add_link(temp_6)
-                datatable(temp_7, escape = TRUE, rownames = FALSE)
+                datatable(temp_7, escape = FALSE, rownames = FALSE)
             } else {
                 temp_4 <- add_link(temp_3)
                 datatable(temp_4, escape = FALSE, rownames = FALSE)
