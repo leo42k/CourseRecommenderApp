@@ -52,8 +52,8 @@ shinyServer(function(input, output, session) {
                 tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term)==1, 1],'>', tempdf[i,1], '</a>')
             }
         }
-        datatable(tempdf, escape = FALSE)
-    }, selection = "none", rownames= FALSE)
+        datatable(tempdf, escape = FALSE, rownames= FALSE)
+    }, selection = "none")
     
     output$y15 = renderUI({
         term <- datasetInput_term()
