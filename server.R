@@ -49,7 +49,7 @@ shinyServer(function(input, output, session) {
         tempdf <- df_use[input$x13_rows_selected,]
         if (nrow(tempdf) >=1) {
             for (i in 1:nrow(tempdf)){
-                tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term)==1, 1],'>', tempdf[i,1], '</a>')
+                tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term)==1, 1],' target="_blank">', tempdf[i,1], '</a>')
             }
         }
         datatable(tempdf, escape = FALSE, rownames= FALSE)
@@ -97,7 +97,7 @@ shinyServer(function(input, output, session) {
         add_link <- function(tempdf){
             if (nrow(tempdf) >=1) {
                 for (i in 1:nrow(tempdf)){
-                    tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term_df)==1, 1],'>', tempdf[i,1], '</a>')
+                    tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term_df)==1, 1],' target="_blank">', tempdf[i,1], '</a>')
                 }
             }
             return(tempdf)
