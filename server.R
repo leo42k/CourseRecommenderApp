@@ -41,15 +41,19 @@ shinyServer(function(input, output, session) {
         term <- datasetInput()
         df_use <- df[df[,3] == term,]
         df_use
-    })
+    }, rownames= FALSE)
 #    output$y13 = renderPrint(input$x13_rows_selected)
     output$y13 = DT::renderDataTable({
         term <- datasetInput()
         df_use <- df[df[,3] == term,]
         tempdf <- df_use[input$x13_rows_selected,]
-        if (nrow(tempdf) >=1) tempdf[,1] <- apply(as.matrix(tempdf[,1]), 1, function(t) paste0('<a href=',comb[(comb[,2] == t) * (comb[,4] == term), 1],'>', t, '</a>'))
+        if (nrow(tempdf) >=1) {
+            for (i in 1:nrow(tempdf)){
+                tempdf[i,1] <- paste0('<a href=',comb[(comb[,2] == tempdf[i,1]) * (comb[,4] == term)==1, 1],'>', tempdf[i,1], '</a>')
+            }
+        }
         datatable(tempdf, escape = FALSE)
-    }, selection = "none")
+    }, selection = "none", rownames= FALSE)
     
     output$y15 = renderUI({
         term <- datasetInput_term()
@@ -117,7 +121,7 @@ shinyServer(function(input, output, session) {
                 temp_6
             } else temp_3
         } else temp_3
-    }, selection = "none")
+    }, selection = "none", rownames= FALSE)
     output$y14 = renderPrint(input$x14_rows_selected)
     
 })
