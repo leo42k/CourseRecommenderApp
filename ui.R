@@ -19,7 +19,7 @@ navbarPage(
     title = 'Course Recommender App',
     
     tabPanel(
-        'Preferrences',
+        'Preferences',
         fluidRow(
             selectInput("program", "Choose a program:", 
                         choices = programs),
